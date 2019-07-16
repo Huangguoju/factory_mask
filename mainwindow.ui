@@ -15,7 +15,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="images.qrc">
-    <normaloff>:/new/prefix1/image/factory.ico</normaloff>:/new/prefix1/image/factory.ico</iconset>
+    <normaloff>:/new/prefix1/image/factory.png</normaloff>:/new/prefix1/image/factory.png</iconset>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QWidget" name="gridLayoutWidget">
@@ -27,7 +27,7 @@
       <height>183</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0">
+    <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>

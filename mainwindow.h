@@ -87,6 +87,8 @@ private slots:
 
     void on_clearButton_clicked();
 
+    void on_factoryConfigMaskEdit_textEdited(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 

@@ -36,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
         << ui->chooseLabel_26 << ui->chooseLabel_27 << ui->chooseLabel_28 << ui->chooseLabel_29 << ui->chooseLabel_30;
 
     for (int i = 0; i < m_checkVec.size(); i++){
-        connect(m_checkVec[i], SIGNAL(stateChanged(int)), this, SLOT(checkChanged()));
+        connect(m_checkVec[i], SIGNAL(clicked(bool)), this, SLOT(checkChanged()));
     }
 
     for (int i = 0; i < m_chooseLabelVec.size(); i++){
@@ -158,11 +158,31 @@ void MainWindow::on_allButton_clicked()
     for (int i = 0; i < m_checkVec.size(); i++){
         m_checkVec[i]->setChecked(true);
     }
+    checkChanged();
 }
 
 void MainWindow::on_clearButton_clicked()
 {
     for (int i = 0; i < m_checkVec.size(); i++){
         m_checkVec[i]->setChecked(false);
+    }
+    checkChanged();
+}
+
+void MainWindow::on_factoryConfigMaskEdit_textEdited(const QString &arg1)
+{
+    supportFactoryConfigMask = arg1.toULongLong();
+    for (int i = 0; i < m_chooseLabelVec.size(); i++){
+        m_chooseLabelVec[i]->clear();
+    }
+    int chooseNode = 0;
+
+    for (int i = 0; i < m_checkVec.size(); i++){
+        if (CHK_BIT_LL(&supportFactoryConfigMask, i)){
+            m_checkVec[i]->setChecked(true);
+            m_chooseLabelVec[chooseNode++]->setText(m_configNameVec[i]->text());
+        }
+        else
+            m_checkVec[i]->setChecked(false);
     }
 }
