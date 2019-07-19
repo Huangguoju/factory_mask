@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    setFixedSize(892, 491);
+
     createActions();
     createMenus();
     createStatusBar();
@@ -84,24 +86,45 @@ void MainWindow::createMenus()
 
     helpMenu = menuBar()->addMenu("帮助");
     helpMenu->addAction(helpAct);
+    helpMenu->addAction(developAct);
     helpMenu->addSeparator();
     helpMenu->addAction(aboutUsAct);
 }
 
 void MainWindow::createActions()
 {
-    exitAct = new QAction(QIcon(":image/exit.ico"), "退出", this);
+    exitAct = new QAction(QIcon(":images/exit.ico"), "退出", this);
     exitAct->setShortcuts(QKeySequence::Quit);
     exitAct->setStatusTip("Exit the application");
     connect(exitAct, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
 
-    helpAct = new QAction(QIcon(":image/help.ico"), "帮助", this);
+    helpAct = new QAction(QIcon(":images/help.ico"), "帮助", this);
     helpAct->setShortcuts(QKeySequence::HelpContents); //添加快捷键
     connect(helpAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
-    aboutUsAct = new QAction(QIcon(":image/about.ico"), "关于", this);
+    aboutUsAct = new QAction(QIcon(":images/about.ico"), "关于", this);
     aboutUsAct->setShortcuts(QKeySequence::WhatsThis); //添加快捷键
     connect(aboutUsAct, SIGNAL(triggered()), this, SLOT(about()));
+
+    developAct = new QAction("develop", this);
+    connect(developAct, SIGNAL(triggered()), this, SLOT(develop()));
+}
+
+void MainWindow::develop()
+{
+    view = new QQuickView;
+    view->create();
+
+    view->setSource(QUrl("qrc:/frame.qml"));
+    view->setIcon(QIcon(":images/exit.ico"));
+    view->setTitle("粒子漩涡");
+
+    view->setResizeMode(QQuickView::SizeRootObjectToView);
+    view->setMaximumSize(QSize(1820, 1080));
+    view->setMinimumSize(QSize(300, 150));
+    view->setX(this->x() - 100);
+    view->setY(this->y() - 100);
+    view->show();
 }
 
 void MainWindow::about()

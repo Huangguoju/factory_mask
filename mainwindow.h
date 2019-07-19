@@ -14,6 +14,9 @@
 #include "QTimer"
 #include "time.h"
 
+#include <QtQuick/QQuickView>
+
+
 /* 计算数组下标 */
 #define ARRAY_INDEX(index, BitNum) ((index) / (BitNum))
 /* 计算BIT位 */
@@ -83,10 +86,10 @@ private slots:
     void checkChanged();
 
     void about();
+    void develop();
+
     void on_allButton_clicked();
-
     void on_clearButton_clicked();
-
     void on_factoryConfigMaskEdit_textEdited(const QString &arg1);
 
 private:
@@ -100,11 +103,14 @@ private:
     QAction *exitAct;
     QAction *helpAct;
     QAction *aboutUsAct;
+    QAction *developAct;
 
     QVector<QCheckBox *> m_checkVec;
     QVector<QLabel *> m_configNameVec;
     QVector<QLabel *> m_chooseLabelVec;
     unsigned long long supportFactoryConfigMask;
+
+    QQuickView *view;
 
 };
 

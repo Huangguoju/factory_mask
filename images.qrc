@@ -1,6 +1,11 @@
 <RCC>
-    <qresource prefix="/new/prefix1">
-        <file>image/factory.ico</file>
-        <file>image/factory.png</file>
+    <qresource prefix="/">
+        <file>images/about.ico</file>
+        <file>images/albumcover.png</file>
+        <file>images/exit.ico</file>
+        <file>images/factory.ico</file>
+        <file>images/factory.png</file>
+        <file>images/help.ico</file>
+        <file>frame.qml</file>
     </qresource>
 </RCC>
