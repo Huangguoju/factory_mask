@@ -1,5 +1,5 @@
 import QtQuick 2.0
-
+//实现粒子漩涡特效
 Item {
     id: mainview
     width: 1280

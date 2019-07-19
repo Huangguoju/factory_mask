@@ -114,10 +114,16 @@ void MainWindow::develop()
 {
     view = new QQuickView;
     view->create();
-
-    view->setSource(QUrl("qrc:/frame.qml"));
+    if (rand() % 3){
+        view->setSource(QUrl("qrc:/frame.qml"));
+        view->setTitle("粒子漩涡");
+    }
+    else
+    {
+        view->setSource(QUrl("qrc:/samegame.qml"));
+        view->setTitle("隐藏模式");
+    }
     view->setIcon(QIcon(":images/exit.ico"));
-    view->setTitle("粒子漩涡");
 
     view->setResizeMode(QQuickView::SizeRootObjectToView);
     view->setMaximumSize(QSize(1820, 1080));
