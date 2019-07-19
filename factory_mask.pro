@@ -7,7 +7,7 @@
 QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-QT += quick
+QT += qml quick
 
 TARGET = factory_mask
 TEMPLATE = app
@@ -41,3 +41,11 @@ FORMS += \
 
 RESOURCES += \
     images.qrc
+
+OTHER_FILES  += \
+                Block.qml \
+                Block.qml \
+                Dialog.qml \
+                frame.qml \
+                samegame.qml \
+                pics/*.png
