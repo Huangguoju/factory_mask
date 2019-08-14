@@ -15,6 +15,8 @@
 #include "time.h"
 
 #include <QtQuick/QQuickView>
+#include <QNetworkAccessManager>
+#include "ftpmanager.h"
 
 
 /* 计算数组下标 */
@@ -75,6 +77,7 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = 0);
+    static MainWindow *instance() {return m_pSelf;}
     ~MainWindow();
 
 private slots:
@@ -87,11 +90,15 @@ private slots:
 
     void about();
     void develop();
+    void update();
+
+    void finish(bool);
 
     void on_allButton_clicked();
     void on_clearButton_clicked();
     void on_factoryConfigMaskEdit_textEdited(const QString &arg1);
-
+public:
+    float oldversion;
 private:
     Ui::MainWindow *ui;
 
@@ -104,14 +111,17 @@ private:
     QAction *helpAct;
     QAction *aboutUsAct;
     QAction *developAct;
+    QAction *updateAct;
 
     QVector<QCheckBox *> m_checkVec;
     QVector<QLabel *> m_configNameVec;
     QVector<QLabel *> m_chooseLabelVec;
     unsigned long long supportFactoryConfigMask;
 
-    QQuickView *view;
+    FtpManager *m_detect;
 
+    QQuickView *view;
+    static MainWindow *m_pSelf;
 };
 
 #endif // MAINWINDOW_H

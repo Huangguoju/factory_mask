@@ -8,6 +8,8 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 QT += qml quick
+# 网络请求
+QT += network
 
 TARGET = factory_mask
 TEMPLATE = app
@@ -29,15 +31,20 @@ RC_FILE = softwarePicture.rc
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        aboutusdialog.cpp
+        aboutusdialog.cpp \
+    updatedialog.cpp \
+    ftpmanager.cpp
 
 HEADERS += \
         mainwindow.h \
-        aboutusdialog.h
+        aboutusdialog.h \
+    updatedialog.h \
+    ftpmanager.h
 
 FORMS += \
         mainwindow.ui \
-        aboutusdialog.ui
+        aboutusdialog.ui \
+    updatedialog.ui
 
 RESOURCES += \
     images.qrc

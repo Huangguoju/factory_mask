@@ -3,12 +3,16 @@
 #include "aboutusdialog.h"
 #include <QMessageBox>
 #include "qstring.h"
+#include "updatedialog.h"
+
+MainWindow *MainWindow::m_pSelf = NULL;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    m_pSelf = this;
 
     setFixedSize(892, 491);
 
@@ -47,6 +51,73 @@ MainWindow::MainWindow(QWidget *parent) :
 
     supportFactoryConfigMask = 0;
     ui->factoryConfigMaskEdit->clear();
+
+    oldversion = 1.1;
+
+    m_detect = new FtpManager;
+//    m_detect->setHostPort("169.254.105.212", 21);
+//    m_detect->setUserInfo("admin", "123456");
+
+    QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
+    QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
+
+    m_detect->get("/upgradInfo.txt", QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+    connect(m_detect, SIGNAL(sigfinish(bool)), this, SLOT(finish(bool)));
+
+}
+
+void MainWindow::finish(bool result)
+{
+    /*
+    forceUpgrad:0 //自动检测 0:检测到新版本不提示升级  1:检测到新版本并提示升级 2：检测到新版本不提示直接强制升级 3：忽略升级请求
+    version:1.1
+    ftpExeName:33
+    downloadExeName:车间配置项掩码计算工具
+    info:
+    增加一些功能，改善一些BUG。
+    车间配置项掩码计算工具
+
+     */
+
+
+    if(!result){
+        QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+        return;
+    }
+    QFile f(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::Truncate))
+    {
+        qDebug() << "Open failed.";
+        QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+        return;
+    }
+
+    QTextStream txtInput(&f);
+    txtInput.setCodec("utf-8");
+    QString lineStr;
+    float newVersion = 0.0;
+    int forceUpgradFlag = 0;
+    while(!txtInput.atEnd())
+    {
+        lineStr = txtInput.readLine();
+        if(lineStr.startsWith("forceUpgrad", Qt::CaseInsensitive)){
+            forceUpgradFlag = lineStr.mid(strlen("forceUpgrad:")).toInt();;
+        }
+
+        if(lineStr.startsWith("version", Qt::CaseSensitive)){
+            newVersion = lineStr.mid(strlen("version:")).toFloat();
+        }
+    }
+    f.close();
+    //删除文件
+    QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+
+    //自动检测 0:检测到新版本不提示升级  1:检测到新版本并提示升级 2：检测到新版本不提示直接强制升级 3：忽略升级请求
+    if(newVersion > oldversion && forceUpgradFlag != 3)
+    {
+        if(forceUpgradFlag == 1 || forceUpgradFlag == 2)
+            update();
+    }
 }
 
 void MainWindow::checkChanged()
@@ -87,6 +158,7 @@ void MainWindow::createMenus()
     helpMenu = menuBar()->addMenu("帮助");
     helpMenu->addAction(helpAct);
     helpMenu->addAction(developAct);
+    helpMenu->addAction(updateAct);
     helpMenu->addSeparator();
     helpMenu->addAction(aboutUsAct);
 }
@@ -108,6 +180,9 @@ void MainWindow::createActions()
 
     developAct = new QAction("develop", this);
     connect(developAct, SIGNAL(triggered()), this, SLOT(develop()));
+
+    updateAct = new QAction("检查更新...", this);
+    connect(updateAct, SIGNAL(triggered()), this, SLOT(update()));
 }
 
 void MainWindow::develop()
@@ -137,6 +212,14 @@ void MainWindow::about()
 {
     AboutUsDialog *aboutUsdia = new AboutUsDialog(this);
     aboutUsdia->exec();
+}
+
+void MainWindow::update()
+{
+    UpdateDialog *updateDia = new UpdateDialog(this);
+    //无标题
+    //updateDia->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint);
+    updateDia->exec();
 }
 
 void MainWindow::createStatusBar()
