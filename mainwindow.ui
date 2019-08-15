@@ -982,6 +982,19 @@
      <string>清空</string>
     </property>
    </widget>
+   <widget class="QLabel" name="curDateTimeLabel">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>410</y>
+      <width>161</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>curDateTimeLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

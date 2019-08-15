@@ -174,7 +174,7 @@ void UpdateDialog::finish(bool result)
     }
     else if(curPage == DOWNLOAD_PAGE)
     {
-        ui->label->setText("下载完成...");
+        ui->label->setText("下载完成，准备升级！");
         //更新步骤,制作辅助升级脚本->运行 ->关闭自己
 
         QFile file(upgradBatCommand);

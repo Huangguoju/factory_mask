@@ -15,6 +15,9 @@ AboutUsDialog::AboutUsDialog(QWidget *parent) :
     m_showText = "海贝TV提供技术支持";//显示的文字
     m_charWidth = fontMetrics().width("海");//每个字符的宽度
 
+    QString aboutVer = QString("版本：%1").arg(MainWindow::instance()->oldversion);
+    ui->label_3->setText(aboutVer);
+
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(500);

@@ -91,8 +91,10 @@ private slots:
     void about();
     void develop();
     void update();
+    void timerUpdate();
 
     void finish(bool);
+    void famousRemarkfinish(bool);
 
     void on_allButton_clicked();
     void on_clearButton_clicked();
@@ -119,6 +121,8 @@ private:
     unsigned long long supportFactoryConfigMask;
 
     FtpManager *m_detect;
+    FtpManager *m_famousRemark;
+    QTimer *timer;
 
     QQuickView *view;
     static MainWindow *m_pSelf;

@@ -6,7 +6,7 @@ FtpManager::FtpManager(QObject *parent) : QObject(parent)
     // 设置协议
     m_pUrl.setScheme("ftp");
     m_pDownloadBar = NULL;
-    setHostPort("172.18.6.188", 21);
+    setHostPort("172.18.6.148", 21);
     setUserInfo("admin", "123456");
 }
 

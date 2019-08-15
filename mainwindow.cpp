@@ -51,19 +51,34 @@ MainWindow::MainWindow(QWidget *parent) :
 
     supportFactoryConfigMask = 0;
     ui->factoryConfigMaskEdit->clear();
+    ui->curDateTimeLabel->clear();
 
+    //当前软件版本
     oldversion = 1.1;
 
-    m_detect = new FtpManager;
-//    m_detect->setHostPort("169.254.105.212", 21);
-//    m_detect->setUserInfo("admin", "123456");
-
+    //移除升级后的辅助升级bat脚本
     QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
     QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
 
+    //首次启动检测是否有新版本
+    m_detect = new FtpManager;
     m_detect->get("/upgradInfo.txt", QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
     connect(m_detect, SIGNAL(sigfinish(bool)), this, SLOT(finish(bool)));
 
+    m_famousRemark = new FtpManager;
+    m_famousRemark->get("/famousRemarkOnline.txt", QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    connect(m_famousRemark, SIGNAL(sigfinish(bool)), this, SLOT(famousRemarkfinish(bool)));
+
+    QTimer *Datetimer = new QTimer(this);
+    connect(Datetimer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    Datetimer->start(1000);
+}
+
+void MainWindow::timerUpdate()
+{
+    QDateTime time = QDateTime::currentDateTime();
+    QString str = time.toString("yyyy-MM-dd hh:mm:ss dddd");
+    ui->curDateTimeLabel->setText(str);
 }
 
 void MainWindow::finish(bool result)
@@ -76,7 +91,7 @@ void MainWindow::finish(bool result)
     info:
     增加一些功能，改善一些BUG。
     车间配置项掩码计算工具
-
+    //无限升级：upgradInfo.txt里面的版本大于更新后的版本，且forceUpgrad=2，无限循环升级。
      */
 
 
@@ -84,6 +99,7 @@ void MainWindow::finish(bool result)
         QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
         return;
     }
+
     QFile f(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
     if(!f.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::Truncate))
     {
@@ -227,15 +243,51 @@ void MainWindow::createStatusBar()
     statusBar()->showMessage("已就绪");
 
     famousRemark();
-    QTimer *timer = new QTimer(this);
+    timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(updateFamous()));
     timer->start(100000);
-
 }
 
 void MainWindow::updateFamous()
 {
     statusBar()->showMessage(famousRemarkVector.at(rand() % famousRemarkVector.size()));
+}
+
+
+void MainWindow::famousRemarkfinish(bool result)
+{
+    if(!result){
+        QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+        return;
+    }
+
+    QFile f(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    if(!f.open(QIODevice::ReadOnly | QIODevice::Text | QIODevice::Truncate))
+    {
+        qDebug() << "Open failed.";
+        QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+        return;
+    }
+
+    QTextStream txtInput(&f);
+    txtInput.setCodec("utf-8");
+    QString lineStr;
+    famousRemarkVector.clear();
+    timer->stop();
+    while(!txtInput.atEnd())
+    {
+        lineStr = txtInput.readLine();
+        if(lineStr.startsWith("interval", Qt::CaseSensitive)){
+            //1秒：1000
+            timer->setInterval(lineStr.mid(strlen("interval:")).toInt());
+        }else{
+            famousRemarkVector << lineStr;
+        }
+    }
+    f.close();
+    //删除文件
+    QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    timer->start();
 }
 
 void MainWindow::famousRemark()
