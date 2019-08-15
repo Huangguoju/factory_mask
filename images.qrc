@@ -21,5 +21,6 @@
         <file>pics/redStone.png</file>
         <file>pics/star.png</file>
         <file>pics/yellowStone.png</file>
+        <file>images/easterEgg.gif</file>
     </qresource>
 </RCC>

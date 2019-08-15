@@ -16,6 +16,32 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setFixedSize(892, 491);
 
+    supportFactoryConfigMask = 0;
+    ui->factoryConfigMaskEdit->clear();
+    ui->curDateTimeLabel->clear();
+    ui->movieLabel->clear();
+
+    //当前软件版本
+    oldversion = 1.1;
+
+    //移除升级后的辅助升级bat脚本
+    QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
+    QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
+
+    //首次启动检测是否有新版本
+    m_detect = new FtpManager;
+    m_detect->get("/upgradInfo.txt", QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+    connect(m_detect, SIGNAL(sigfinish(bool)), this, SLOT(finish(bool)));
+
+    m_famousRemark = new FtpManager;
+    m_famousRemark->get("/famousRemarkOnline.txt", QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    connect(m_famousRemark, SIGNAL(sigfinish(bool)), this, SLOT(famousRemarkfinish(bool)));
+
+    QTimer *Datetimer = new QTimer(this);
+    connect(Datetimer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
+    Datetimer->start(1000);
+
+
     createActions();
     createMenus();
     createStatusBar();
@@ -48,30 +74,6 @@ MainWindow::MainWindow(QWidget *parent) :
     for (int i = 0; i < m_chooseLabelVec.size(); i++){
         m_chooseLabelVec[i]->clear();
     }
-
-    supportFactoryConfigMask = 0;
-    ui->factoryConfigMaskEdit->clear();
-    ui->curDateTimeLabel->clear();
-
-    //当前软件版本
-    oldversion = 1.1;
-
-    //移除升级后的辅助升级bat脚本
-    QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
-    QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
-
-    //首次启动检测是否有新版本
-    m_detect = new FtpManager;
-    m_detect->get("/upgradInfo.txt", QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
-    connect(m_detect, SIGNAL(sigfinish(bool)), this, SLOT(finish(bool)));
-
-    m_famousRemark = new FtpManager;
-    m_famousRemark->get("/famousRemarkOnline.txt", QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
-    connect(m_famousRemark, SIGNAL(sigfinish(bool)), this, SLOT(famousRemarkfinish(bool)));
-
-    QTimer *Datetimer = new QTimer(this);
-    connect(Datetimer,SIGNAL(timeout()),this,SLOT(timerUpdate()));
-    Datetimer->start(1000);
 }
 
 void MainWindow::timerUpdate()
@@ -81,11 +83,39 @@ void MainWindow::timerUpdate()
     ui->curDateTimeLabel->setText(str);
 }
 
+void MainWindow::movieStatus(int frameNumber)
+{
+    if (frameNumber == frameCount - 1){
+        movie->stop();
+        disconnect(movie, SIGNAL(frameChanged(int)), this, SLOT(movieStatus(int)));
+        movie->~QMovie();//要销毁qmovie才能删除图片
+        ui->movieLabel->clear();
+        QFile::remove(QCoreApplication::applicationDirPath() + "/startDemo.gif");
+    }
+}
+
+void MainWindow::startDemofinish(bool result)
+{
+    if(!result){
+        QFile::remove(QCoreApplication::applicationDirPath() + "/startDemo.gif");
+        return;
+    }
+
+    movie = new QMovie(QCoreApplication::applicationDirPath() + "/startDemo.gif");
+    ui->movieLabel->setScaledContents(true);//拉伸
+    ui->movieLabel->setGeometry(0, 0, 892, 491);//图片位置
+    ui->movieLabel->setMovie(movie);
+    frameCount = movie->frameCount();
+    movie->start();
+    connect(movie, SIGNAL(frameChanged(int)), this, SLOT(movieStatus(int)));
+}
+
 void MainWindow::finish(bool result)
 {
     /*
     forceUpgrad:0 //自动检测 0:检测到新版本不提示升级  1:检测到新版本并提示升级 2：检测到新版本不提示直接强制升级 3：忽略升级请求
     version:1.1
+    showStartDemo:true
     ftpExeName:33
     downloadExeName:车间配置项掩码计算工具
     info:
@@ -93,7 +123,6 @@ void MainWindow::finish(bool result)
     车间配置项掩码计算工具
     //无限升级：upgradInfo.txt里面的版本大于更新后的版本，且forceUpgrad=2，无限循环升级。
      */
-
 
     if(!result){
         QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
@@ -122,6 +151,15 @@ void MainWindow::finish(bool result)
 
         if(lineStr.startsWith("version", Qt::CaseSensitive)){
             newVersion = lineStr.mid(strlen("version:")).toFloat();
+        }
+
+        if(lineStr.startsWith("showStartDemo", Qt::CaseSensitive)){
+            if (lineStr.mid(strlen("showStartDemo:")).toInt())
+            {
+                m_startDemo = new FtpManager;
+                m_startDemo->get("/startDemo.gif", QCoreApplication::applicationDirPath() + "/startDemo.gif");
+                connect(m_startDemo, SIGNAL(sigfinish(bool)), this, SLOT(startDemofinish(bool)));
+            }
         }
     }
     f.close();

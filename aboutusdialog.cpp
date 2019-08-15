@@ -38,6 +38,19 @@ void AboutUsDialog::paintEvent(QPaintEvent *)
     painter.drawText(width() - m_charWidth*m_curIndex, 30, m_showText.left(m_curIndex));
 }
 
+void AboutUsDialog::mousePressEvent(QMouseEvent *event)
+{
+    int curTextLeft = width() - m_charWidth*m_curIndex;
+    int curTextRight = width() - m_charWidth*m_curIndex + m_showText.length()*m_charWidth;
+    if (event->x() >= curTextLeft && event->x() <= curTextRight && event->y() >= 20 && event->y() <= 30){
+        QMovie *movie = new QMovie(":images/easterEgg.gif");
+        ui->label_3->setScaledContents(true);//拉伸
+        ui->label_3->setGeometry(0, 0, 628, 316);//图片位置
+        ui->label_3->setMovie(movie);
+        ui->textBrowser->setVisible(false);
+        movie->start();
+    }
+}
 
 void AboutUsDialog::on_joinUsURl_linkActivated(const QString &link)
 {

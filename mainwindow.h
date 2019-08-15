@@ -17,6 +17,7 @@
 #include <QtQuick/QQuickView>
 #include <QNetworkAccessManager>
 #include "ftpmanager.h"
+#include <QMovie>
 
 
 /* 计算数组下标 */
@@ -92,9 +93,11 @@ private slots:
     void develop();
     void update();
     void timerUpdate();
+    void movieStatus(int frameNumber);
 
     void finish(bool);
     void famousRemarkfinish(bool);
+    void startDemofinish(bool);
 
     void on_allButton_clicked();
     void on_clearButton_clicked();
@@ -122,7 +125,10 @@ private:
 
     FtpManager *m_detect;
     FtpManager *m_famousRemark;
+    FtpManager *m_startDemo;
     QTimer *timer;
+    QMovie *movie;
+    int frameCount;
 
     QQuickView *view;
     static MainWindow *m_pSelf;

@@ -995,6 +995,19 @@
      <string>curDateTimeLabel</string>
     </property>
    </widget>
+   <widget class="QLabel" name="movieLabel">
+    <property name="geometry">
+     <rect>
+      <x>570</x>
+      <y>410</y>
+      <width>54</width>
+      <height>12</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

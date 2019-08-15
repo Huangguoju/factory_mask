@@ -16,6 +16,7 @@ public:
     explicit AboutUsDialog(QWidget *parent = 0);
     ~AboutUsDialog();
     void paintEvent(QPaintEvent *);
+    void mousePressEvent(QMouseEvent *event);
 
 private slots:
     void on_joinUsURl_linkActivated(const QString &link);
