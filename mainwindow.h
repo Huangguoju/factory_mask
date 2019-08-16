@@ -18,7 +18,10 @@
 #include <QNetworkAccessManager>
 #include "ftpmanager.h"
 #include <QMovie>
-
+#include <QNetworkRequest>
+#include "QNetworkReply"
+#include "qprocess.h"
+#include <QThread>
 
 /* 计算数组下标 */
 #define ARRAY_INDEX(index, BitNum) ((index) / (BitNum))
@@ -72,6 +75,9 @@ namespace Ui {
 class MainWindow;
 }
 
+#define UNUSED(x) (void)x;
+
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -104,6 +110,7 @@ private slots:
     void on_factoryConfigMaskEdit_textEdited(const QString &arg1);
 public:
     float oldversion;
+    QString m_connectUsUrl;
 private:
     Ui::MainWindow *ui;
 
@@ -113,7 +120,7 @@ private:
     QMenu *helpMenu;
 
     QAction *exitAct;
-    QAction *helpAct;
+    //QAction *helpAct;
     QAction *aboutUsAct;
     QAction *developAct;
     QAction *updateAct;

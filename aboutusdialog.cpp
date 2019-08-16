@@ -54,8 +54,34 @@ void AboutUsDialog::mousePressEvent(QMouseEvent *event)
 
 void AboutUsDialog::on_joinUsURl_linkActivated(const QString &link)
 {
-    QDesktopServices::openUrl(QUrl(link));
-
+    //旧电脑打开失败，ShellExecute 'http://www.raysharp.cn/' failed (error 5).
+//    QDesktopServices::openUrl(QUrl(link));
 //    ui->joinUsURl->setText(tr("<a href =" "www.baidu.com" ">google</a>"));
 //    ui->joinUsURl->setOpenExternalLinks(true);
+
+    //用bat脚本打开
+    QFile openUrlfile(QDir::toNativeSeparators(QCoreApplication::applicationDirPath()) + "\\openUrl.bat");
+    if(!openUrlfile.open(QIODevice::ReadWrite | QIODevice::Truncate))//Truncate清空内容再写
+    {
+        qDebug() << "Open failed.";
+        return;
+    }
+
+    QString openUrlStr;
+    if (MainWindow::instance()->m_connectUsUrl.isEmpty()){
+        openUrlStr = QString("start iexplore %1")
+                .arg(link);
+    }else{
+        openUrlStr = QString("start iexplore %1")
+                .arg(MainWindow::instance()->m_connectUsUrl);
+    }
+
+    QTextStream openUrlIn(&openUrlfile);
+    openUrlIn << openUrlStr;
+    openUrlfile.close();
+
+    QProcess p(NULL);
+    p.start(QCoreApplication::applicationDirPath() + "/openUrl.bat");
+    p.waitForFinished();
+    QFile::remove(QCoreApplication::applicationDirPath() + "/openUrl.bat");
 }

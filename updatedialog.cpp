@@ -1,10 +1,6 @@
 #include "updatedialog.h"
 #include "ui_updatedialog.h"
-#include <QNetworkRequest>
-#include "QNetworkAccessManager"
-#include "QNetworkReply"
-#include "qprocess.h"
-#include <QThread>
+
 
 UpdateDialog *UpdateDialog::m_pSelf = NULL;
 
@@ -50,6 +46,7 @@ UpdateDialog::UpdateDialog(QWidget *parent) :
 UpdateDialog::~UpdateDialog()
 {
     m_pSelf = NULL;
+    QFile::remove(QCoreApplication::applicationDirPath() + "/" + downloadExeName + "_bak.exe");
     delete ui;
 }
 
@@ -70,7 +67,7 @@ void UpdateDialog::on_OKButton_clicked()
     curPage = DOWNLOAD_PAGE;
 
     m_ftp->get("/" + ftpExeName + ".exe", LinuxDirPath + "/" + downloadExeName + "_bak.exe");
-
+    connect(m_ftp, SIGNAL(sigfinish(bool)), this, SLOT(finish(bool)));
 }
 
 void UpdateDialog::on_CancelButton_clicked()
@@ -95,6 +92,7 @@ void UpdateDialog::finish(bool result)
 {
     if(!result){
         QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+        QFile::remove(QCoreApplication::applicationDirPath() + "/" + downloadExeName + "_bak.exe");
         QMessageBox msg(QMessageBox::Warning, "upgradInfo", "下载失败");
         msg.exec();
         this->close();

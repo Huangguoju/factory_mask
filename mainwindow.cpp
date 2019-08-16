@@ -20,6 +20,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->factoryConfigMaskEdit->clear();
     ui->curDateTimeLabel->clear();
     ui->movieLabel->clear();
+	movie = NULL;
 
     //当前软件版本
     oldversion = 1.1;
@@ -76,6 +77,26 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 }
 
+
+MainWindow::~MainWindow()
+{
+    if (movie){
+        movie->stop();
+        disconnect(movie, SIGNAL(frameChanged(int)), this, SLOT(movieStatus(int)));
+        movie->~QMovie();//要销毁qmovie才能删除图片
+        ui->movieLabel->clear();
+        ui->movieLabel->hide();
+        QFile::remove(QCoreApplication::applicationDirPath() + "/startDemo.gif");
+    }
+
+    QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
+    QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
+    QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+    QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    delete ui;
+}
+
+
 void MainWindow::timerUpdate()
 {
     QDateTime time = QDateTime::currentDateTime();
@@ -89,7 +110,9 @@ void MainWindow::movieStatus(int frameNumber)
         movie->stop();
         disconnect(movie, SIGNAL(frameChanged(int)), this, SLOT(movieStatus(int)));
         movie->~QMovie();//要销毁qmovie才能删除图片
+        movie = NULL;
         ui->movieLabel->clear();
+        ui->movieLabel->hide();
         QFile::remove(QCoreApplication::applicationDirPath() + "/startDemo.gif");
     }
 }
@@ -116,6 +139,7 @@ void MainWindow::finish(bool result)
     forceUpgrad:0 //自动检测 0:检测到新版本不提示升级  1:检测到新版本并提示升级 2：检测到新版本不提示直接强制升级 3：忽略升级请求
     version:1.1
     showStartDemo:true
+    connectUsUrl:http://www.baidu.com
     ftpExeName:33
     downloadExeName:车间配置项掩码计算工具
     info:
@@ -126,6 +150,7 @@ void MainWindow::finish(bool result)
 
     if(!result){
         QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
+        QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
         return;
     }
 
@@ -142,6 +167,7 @@ void MainWindow::finish(bool result)
     QString lineStr;
     float newVersion = 0.0;
     int forceUpgradFlag = 0;
+    m_connectUsUrl = "";
     while(!txtInput.atEnd())
     {
         lineStr = txtInput.readLine();
@@ -151,6 +177,10 @@ void MainWindow::finish(bool result)
 
         if(lineStr.startsWith("version", Qt::CaseSensitive)){
             newVersion = lineStr.mid(strlen("version:")).toFloat();
+        }
+
+        if(lineStr.startsWith("connectUsUrl", Qt::CaseSensitive)){
+            m_connectUsUrl = lineStr.mid(strlen("connectUsUrl:"));
         }
 
         if(lineStr.startsWith("showStartDemo", Qt::CaseSensitive)){
@@ -196,11 +226,6 @@ void MainWindow::checkChanged()
 }
 
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
-
 
 void MainWindow::createMenus()
 {
@@ -210,7 +235,7 @@ void MainWindow::createMenus()
     menuBar()->addSeparator();
 
     helpMenu = menuBar()->addMenu("帮助");
-    helpMenu->addAction(helpAct);
+    //helpMenu->addAction(helpAct);
     helpMenu->addAction(developAct);
     helpMenu->addAction(updateAct);
     helpMenu->addSeparator();
@@ -224,9 +249,9 @@ void MainWindow::createActions()
     exitAct->setStatusTip("Exit the application");
     connect(exitAct, SIGNAL(triggered()), qApp, SLOT(closeAllWindows()));
 
-    helpAct = new QAction(QIcon(":images/help.ico"), "帮助", this);
-    helpAct->setShortcuts(QKeySequence::HelpContents); //添加快捷键
-    connect(helpAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
+    //helpAct = new QAction(QIcon(":images/help.ico"), "帮助", this);
+    //helpAct->setShortcuts(QKeySequence::HelpContents); //添加快捷键
+    //connect(helpAct, SIGNAL(triggered()), qApp, SLOT(aboutQt()));
 
     aboutUsAct = new QAction(QIcon(":images/about.ico"), "关于", this);
     aboutUsAct->setShortcuts(QKeySequence::WhatsThis); //添加快捷键

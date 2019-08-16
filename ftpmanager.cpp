@@ -51,7 +51,13 @@ void FtpManager::get(const QString &path, const QString &fileName)
     m_pUrl.setPath(path);
 
     QNetworkRequest request(m_pUrl);
-    QNetworkReply *pReply = m_manager.get(request);
+    pReply = m_manager.get(request);
+
+    pTimeout = new QReplyTimeout(pReply, 1000);
+    // 网络超时进一步处理,如果没有发射finished()信号就超时，即使正在下载。
+//    connect(pTimeout, &QReplyTimeout::timeout, [=]() {
+//        qDebug() << "Connect Network Timeout";
+//    });
 
     connect(pReply, SIGNAL(finished()), this, SLOT(finished()));
     connect(pReply, SIGNAL(downloadProgress(qint64,qint64)), this, SLOT(ftpdownloadProgress(qint64, qint64)));
@@ -75,6 +81,7 @@ void FtpManager::ftperror(QNetworkReply::NetworkError error)
 void FtpManager::ftpuploadProgress(qint64 bytesSent, qint64 bytesTotal)
 {
     qDebug() << bytesSent << bytesTotal ;
+    pTimeout->stop();
 //    m_pUploadBar->setMaximum(bytesTotal);
 //    m_pUploadBar->setValue(bytesSent);
 }
@@ -83,6 +90,7 @@ void FtpManager::ftpuploadProgress(qint64 bytesSent, qint64 bytesTotal)
 void FtpManager::ftpdownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
 {
     qDebug() << bytesReceived << bytesTotal ;
+    pTimeout->stop();
     if(m_pDownloadBar){
         m_pDownloadBar->setMaximum(bytesTotal);
         m_pDownloadBar->setValue(bytesReceived);
@@ -101,7 +109,7 @@ void FtpManager::finished()
     }
         break;
     default:
-        qDebug() << " finished err  " ;
+        qDebug() << " download err: please Check Network Status  " ;
         result = false;
         break;
     }
