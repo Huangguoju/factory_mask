@@ -70,6 +70,7 @@ private slots:
 
     // 下载过程中写文件
     void finished();
+    void uploadFinish();
 private:
     QUrl m_pUrl;
     QFile m_file;

@@ -22,6 +22,7 @@
 #include "QNetworkReply"
 #include "qprocess.h"
 #include <QThread>
+#include "useuserinfo.h"
 
 /* 计算数组下标 */
 #define ARRAY_INDEX(index, BitNum) ((index) / (BitNum))
@@ -104,6 +105,7 @@ private slots:
     void finish(bool);
     void famousRemarkfinish(bool);
     void startDemofinish(bool);
+    void uploadfinish(bool);
 
     void on_allButton_clicked();
     void on_clearButton_clicked();
@@ -133,9 +135,11 @@ private:
     FtpManager *m_detect;
     FtpManager *m_famousRemark;
     FtpManager *m_startDemo;
+    FtpManager *m_upload;
     QTimer *timer;
     QMovie *movie;
     int frameCount;
+    useUserInfo *UserInfo;
 
     QQuickView *view;
     static MainWindow *m_pSelf;

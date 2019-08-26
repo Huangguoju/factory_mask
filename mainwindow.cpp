@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     m_pSelf = this;
 
-    setFixedSize(892, 491);
+    setFixedSize(892, 562);
 
     supportFactoryConfigMask = 0;
     ui->factoryConfigMaskEdit->clear();
@@ -22,8 +22,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->movieLabel->clear();
 	movie = NULL;
 
+    UserInfo = new useUserInfo;
+    qDebug() << UserInfo->ip() ; //有全局变量，不能删
+
     //当前软件版本
-    oldversion = 1.1;
+    oldversion = 1.2;
 
     //移除升级后的辅助升级bat脚本
     QFile::remove(QCoreApplication::applicationDirPath() + "/upgrad.bat");
@@ -52,13 +55,15 @@ MainWindow::MainWindow(QWidget *parent) :
                << ui->checkBox10 << ui->checkBox11 << ui->checkBox12 << ui->checkBox13 << ui->checkBox14 \
                << ui->checkBox15 << ui->checkBox16 << ui->checkBox17 << ui->checkBox18 << ui->checkBox19 \
                << ui->checkBox20 << ui->checkBox21 << ui->checkBox22 << ui->checkBox23 << ui->checkBox24 \
-               << ui->checkBox25 << ui->checkBox26 << ui->checkBox27 << ui->checkBox28 << ui->checkBox29;
+               << ui->checkBox25 << ui->checkBox26 << ui->checkBox27 << ui->checkBox28 << ui->checkBox29 \
+               << ui->checkBox30 << ui->checkBox31 << ui->checkBox32;
 
     m_configNameVec << ui->label0 << ui->label1 << ui->label2 << ui->label3 << ui->label4 << ui->label5 \
                     << ui->label6 << ui->label7 << ui->label8 << ui->label9 << ui->label10 << ui->label11 \
                     << ui->label12 << ui->label13 << ui->label14 << ui->label15 << ui->label16 << ui->label17 \
                     << ui->label18 << ui->label19 << ui->label20 << ui->label21 << ui->label22 << ui->label23 \
-                    << ui->label24 << ui->label25 << ui->label26 << ui->label27 << ui->label28 << ui->label29;
+                    << ui->label24 << ui->label25 << ui->label26 << ui->label27 << ui->label28 << ui->label29 \
+                    << ui->label30 << ui->label31 << ui->label32;
 
     m_chooseLabelVec
         << ui->chooseLabel_1 << ui->chooseLabel_2 << ui->chooseLabel_3 << ui->chooseLabel_4 << ui->chooseLabel_5 \
@@ -66,11 +71,16 @@ MainWindow::MainWindow(QWidget *parent) :
         << ui->chooseLabel_11 << ui->chooseLabel_12 << ui->chooseLabel_13 << ui->chooseLabel_14 << ui->chooseLabel_15 \
         << ui->chooseLabel_16 << ui->chooseLabel_17 << ui->chooseLabel_18 << ui->chooseLabel_19 << ui->chooseLabel_20 \
         << ui->chooseLabel_21 << ui->chooseLabel_22 << ui->chooseLabel_23 << ui->chooseLabel_24 << ui->chooseLabel_25 \
-        << ui->chooseLabel_26 << ui->chooseLabel_27 << ui->chooseLabel_28 << ui->chooseLabel_29 << ui->chooseLabel_30;
+        << ui->chooseLabel_26 << ui->chooseLabel_27 << ui->chooseLabel_28 << ui->chooseLabel_29 << ui->chooseLabel_30 \
+        << ui->chooseLabel_31 << ui->chooseLabel_32 << ui->chooseLabel_33;
 
     for (int i = 0; i < m_checkVec.size(); i++){
         connect(m_checkVec[i], SIGNAL(clicked(bool)), this, SLOT(checkChanged()));
     }
+    m_checkVec[0]->setChecked(true); //OrderDeviceID
+    m_checkVec[0]->setEnabled(false);
+    m_checkVec[1]->setChecked(true); //TranscationID
+    m_checkVec[1]->setEnabled(false);
 
     for (int i = 0; i < m_chooseLabelVec.size(); i++){
         m_chooseLabelVec[i]->clear();
@@ -93,6 +103,7 @@ MainWindow::~MainWindow()
     QFile::remove(QCoreApplication::applicationDirPath() + "/updateAssistant.bat");
     QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
     QFile::remove(QCoreApplication::applicationDirPath() + "/famousRemarkOnline.txt");
+    QFile::remove(QCoreApplication::applicationDirPath() + + "/" + UserInfo->ip() + "_" + UserInfo->mac() + ".txt");
     delete ui;
 }
 
@@ -131,6 +142,16 @@ void MainWindow::startDemofinish(bool result)
     frameCount = movie->frameCount();
     movie->start();
     connect(movie, SIGNAL(frameChanged(int)), this, SLOT(movieStatus(int)));
+}
+
+void MainWindow::uploadfinish(bool result)
+{
+    qDebug() << result ;
+    if(!result){
+        QFile::remove(QCoreApplication::applicationDirPath() + + "/" + UserInfo->ip() + "_" + UserInfo->mac() + ".txt");
+        return;
+    }
+    QFile::remove(QCoreApplication::applicationDirPath() + + "/" + UserInfo->ip() + "_" + UserInfo->mac() + ".txt");
 }
 
 void MainWindow::finish(bool result)
@@ -196,6 +217,28 @@ void MainWindow::finish(bool result)
     //删除文件
     QFile::remove(QCoreApplication::applicationDirPath() + "/upgradInfo.txt");
 
+    //上传记录用户登录信息
+    QString uploadFileName = QCoreApplication::applicationDirPath() + "/" + UserInfo->ip() + "_" + UserInfo->mac() + ".txt";
+    QString fileName = "factory_useUserInfo/" + UserInfo->ip() + "_" + UserInfo->mac() + ".txt";
+
+    QFile upload(uploadFileName);
+    if(!upload.open(QIODevice::ReadWrite | QIODevice::Text | QIODevice::Truncate))
+    {
+        qDebug() << "Open failed.";
+        QFile::remove(uploadFileName);
+        return;
+    }
+
+    QTextStream txtUpload(&upload);
+    txtUpload << UserInfo->localmachineName() + "\n";
+    txtUpload << UserInfo->osVersion() + "\n";
+    txtUpload << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss dddd") + "\n";
+    upload.close();
+
+    m_upload = new FtpManager;
+    m_upload->put(uploadFileName, fileName);
+    connect(m_upload, SIGNAL(sigfinish(bool)), this, SLOT(uploadfinish(bool)));
+
     //自动检测 0:检测到新版本不提示升级  1:检测到新版本并提示升级 2：检测到新版本不提示直接强制升级 3：忽略升级请求
     if(newVersion > oldversion && forceUpgradFlag != 3)
     {
@@ -211,6 +254,10 @@ void MainWindow::checkChanged()
         m_chooseLabelVec[i]->clear();
     }
     int chooseNode = 0;
+    m_checkVec[0]->setChecked(true); //OrderDeviceID
+    m_checkVec[0]->setEnabled(false);
+    m_checkVec[1]->setChecked(true); //TranscationID
+    m_checkVec[1]->setEnabled(false);
 
     for (int i = 0; i < m_checkVec.size(); i++){
         if (m_checkVec[i]->isChecked()){
@@ -356,28 +403,7 @@ void MainWindow::famousRemarkfinish(bool result)
 void MainWindow::famousRemark()
 {
     srand(time(NULL));
-    famousRemarkVector  << "泰戈尔曾经说过:要是童年的日子能重新回来，那我一定不再浪费光阴，我要把每分每秒都用来读书。"
-        << "三年二班的周杰伦,请马上到教导处来"
-        << "真理惟一可靠的标准就是永远自相符合。"
-        << "时间是一切财富中最宝贵的财富。"
-        << "世界上一成不变的东西，只有“任何事物都是在不断变化的”这条真理。"
-        << "生活有度，人生添寿。 —— 书摘"
-        << "任何事物都无法抗拒吞食一切的时间。"
-        << "青春是没有经验和任性的。"
-        << "思想以自己的言语喂养它自己，而成长起来。"
-        << "泰戈尔曾经说过：沉默是一种美德，但在喜欢的人面前沉默那便是懦弱，我已经懦弱了三年，"
-        "今天我要勇敢。黄晶晶同学，你愿意和我携手告别高中时代吗！ - 青春派"
-        << "过放荡不羁的生活，容易得像顺水推舟，但是要结识良朋益友，却难如登天。"
-        << "这世界要是没有爱情，它在我们心中还会有什么意义！这就如一盏没有亮光的走马灯。"
-        << "人生并不像火车要通过每个站似的经过每一个生活阶段。人生总是直向前行走，从不留下什么。"
-        << "有所作为是生活的最高境界。 —— 恩格斯"
-        << "我们活着不能与草木同腐，不能醉生梦死，枉度人生，要有所做为。"
-        << "浪费别人的时间等于是谋财害命，浪费自己的时间等于是慢性自杀。 —— 列宁"
-        << "现实是此岸，理想是彼岸，中间隔着湍急的河流，行动则是架在河上的桥梁。 —— 克雷洛夫"
-        << "读书谓已多，抚事知不足。 —— 王安石"
-        << "青年长于创造而短于思考，长于猛干而短于讨论，长于革新而短于持重。 —— 培根"
-        << "理想对我来说，具有一种非凡的魅力。我的理想总是充满着生活和泥土气息。我从来都不去空想那些不可能实现的事情。 —— 奥斯特洛夫斯基"
-        << "青春啊，难道你始终囚禁在狭小圈子里？你得撕破老年的蛊惑人心的网。";
+    famousRemarkVector  << "";
 }
 
 void MainWindow::on_allButton_clicked()
@@ -404,6 +430,11 @@ void MainWindow::on_factoryConfigMaskEdit_textEdited(const QString &arg1)
     }
     int chooseNode = 0;
 
+    m_checkVec[0]->setChecked(true); //OrderDeviceID
+    m_checkVec[0]->setEnabled(false);
+    m_checkVec[1]->setChecked(true); //TranscationID
+    m_checkVec[1]->setEnabled(false);
+
     for (int i = 0; i < m_checkVec.size(); i++){
         if (CHK_BIT_LL(&supportFactoryConfigMask, i)){
             m_checkVec[i]->setChecked(true);
@@ -413,3 +444,5 @@ void MainWindow::on_factoryConfigMaskEdit_textEdited(const QString &arg1)
             m_checkVec[i]->setChecked(false);
     }
 }
+
+

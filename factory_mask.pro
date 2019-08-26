@@ -33,13 +33,15 @@ SOURCES += \
         mainwindow.cpp \
         aboutusdialog.cpp \
     updatedialog.cpp \
-    ftpmanager.cpp
+    ftpmanager.cpp \
+    useuserinfo.cpp
 
 HEADERS += \
         mainwindow.h \
         aboutusdialog.h \
     updatedialog.h \
-    ftpmanager.h
+    ftpmanager.h \
+    useuserinfo.h
 
 FORMS += \
         mainwindow.ui \

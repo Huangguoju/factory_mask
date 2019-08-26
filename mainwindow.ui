@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>892</width>
-    <height>491</height>
+    <width>901</width>
+    <height>562</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -24,141 +24,38 @@
       <x>40</x>
       <y>10</y>
       <width>801</width>
-      <height>183</height>
+      <height>241</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout" columnstretch="0,0,0,0,0,0,0,0">
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
-     <item row="4" column="2">
-      <widget class="QLabel" name="label10">
+     <item row="7" column="5">
+      <widget class="QLabel" name="label21">
        <property name="text">
-        <string>设备名称</string>
+        <string>Poe功率标记</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="0">
-      <widget class="QLabel" name="label8">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>60</horstretch>
-         <verstretch>18</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="sizeIncrement">
-        <size>
-         <width>60</width>
-         <height>18</height>
-        </size>
-       </property>
+     <item row="8" column="4">
+      <widget class="QCheckBox" name="checkBox20">
        <property name="text">
-        <string>产品型号</string>
+        <string>20</string>
        </property>
       </widget>
      </item>
-     <item row="4" column="3">
-      <widget class="QLabel" name="label11">
+     <item row="8" column="3">
+      <widget class="QCheckBox" name="checkBox19">
        <property name="text">
-        <string>主板型号</string>
+        <string>19</string>
        </property>
       </widget>
      </item>
-     <item row="6" column="7">
-      <widget class="Line" name="line_10">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="4">
-      <widget class="QLabel" name="label12">
+     <item row="8" column="1">
+      <widget class="QCheckBox" name="checkBox17">
        <property name="text">
-        <string>配置语言</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="4">
-      <widget class="Line" name="line_13">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="Line" name="line_11">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="Line" name="line_12">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="2">
-      <widget class="Line" name="line_4">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="5">
-      <widget class="QLabel" name="label13">
-       <property name="text">
-        <string>默认语言</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="7">
-      <widget class="Line" name="line_14">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="3">
-      <widget class="QCheckBox" name="checkBox11">
-       <property name="text">
-        <string>11</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="2">
-      <widget class="QCheckBox" name="checkBox10">
-       <property name="text">
-        <string>10</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="3">
-      <widget class="QLabel" name="label19">
-       <property name="text">
-        <string>报警输入个数</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="3">
-      <widget class="Line" name="line">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="7">
-      <widget class="QLabel" name="label23">
-       <property name="text">
-        <string>盘组开关</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QLabel" name="label1">
-       <property name="text">
-        <string>TranscationID</string>
+        <string>17</string>
        </property>
       </widget>
      </item>
@@ -183,10 +80,10 @@
        </property>
       </widget>
      </item>
-     <item row="7" column="5">
-      <widget class="QLabel" name="label21">
+     <item row="1" column="1">
+      <widget class="QLabel" name="label1">
        <property name="text">
-        <string>Poe功率标记</string>
+        <string>TranscationID</string>
        </property>
       </widget>
      </item>
@@ -197,27 +94,6 @@
        </property>
       </widget>
      </item>
-     <item row="8" column="4">
-      <widget class="QCheckBox" name="checkBox20">
-       <property name="text">
-        <string>20</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="1">
-      <widget class="QCheckBox" name="checkBox17">
-       <property name="text">
-        <string>17</string>
-       </property>
-      </widget>
-     </item>
-     <item row="8" column="3">
-      <widget class="QCheckBox" name="checkBox19">
-       <property name="text">
-        <string>19</string>
-       </property>
-      </widget>
-     </item>
      <item row="8" column="2">
       <widget class="QCheckBox" name="checkBox18">
        <property name="text">
@@ -225,66 +101,10 @@
        </property>
       </widget>
      </item>
-     <item row="11" column="1">
-      <widget class="QCheckBox" name="checkBox25">
+     <item row="10" column="7">
+      <widget class="QLabel" name="label31">
        <property name="text">
-        <string>25</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="6">
-      <widget class="QCheckBox" name="checkBox6">
-       <property name="text">
-        <string>6</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="5">
-      <widget class="QCheckBox" name="checkBox13">
-       <property name="text">
-        <string>13</string>
-       </property>
-      </widget>
-     </item>
-     <item row="7" column="6">
-      <widget class="QLabel" name="label22">
-       <property name="text">
-        <string>音频个数</string>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="6">
-      <widget class="QLabel" name="label14">
-       <property name="text">
-        <string>硬盘分配方式</string>
-       </property>
-      </widget>
-     </item>
-     <item row="5" column="4">
-      <widget class="QCheckBox" name="checkBox12">
-       <property name="text">
-        <string>12</string>
-       </property>
-      </widget>
-     </item>
-     <item row="11" column="2">
-      <widget class="QCheckBox" name="checkBox26">
-       <property name="text">
-        <string>26</string>
-       </property>
-      </widget>
-     </item>
-     <item row="6" column="0">
-      <widget class="Line" name="line_3">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="4" column="7">
-      <widget class="QLabel" name="label15">
-       <property name="text">
-        <string>序列号</string>
+        <string>预留1</string>
        </property>
       </widget>
      </item>
@@ -512,6 +332,41 @@
        </property>
       </widget>
      </item>
+     <item row="13" column="0">
+      <widget class="QLabel" name="label32">
+       <property name="text">
+        <string>预留2</string>
+       </property>
+      </widget>
+     </item>
+     <item row="15" column="0">
+      <widget class="Line" name="line_15">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="14" column="0">
+      <widget class="QCheckBox" name="checkBox32">
+       <property name="text">
+        <string>32</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="2">
+      <widget class="QLabel" name="label10">
+       <property name="text">
+        <string>设备名称</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="7">
+      <widget class="QLabel" name="label15">
+       <property name="text">
+        <string>序列号</string>
+       </property>
+      </widget>
+     </item>
      <item row="7" column="1">
       <widget class="QLabel" name="label17">
        <property name="text">
@@ -629,6 +484,270 @@
        </property>
       </widget>
      </item>
+     <item row="10" column="6">
+      <widget class="QLabel" name="label30">
+       <property name="text">
+        <string>推送类型</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="6">
+      <widget class="QCheckBox" name="checkBox30">
+       <property name="text">
+        <string>30</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="Line" name="line_11">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="4">
+      <widget class="Line" name="line_13">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="4">
+      <widget class="QLabel" name="label12">
+       <property name="text">
+        <string>配置语言</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="3">
+      <widget class="QLabel" name="label11">
+       <property name="text">
+        <string>主板型号</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="7">
+      <widget class="Line" name="line_10">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="label8">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>60</horstretch>
+         <verstretch>18</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="sizeIncrement">
+        <size>
+         <width>60</width>
+         <height>18</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>产品型号</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="4">
+      <widget class="QCheckBox" name="checkBox12">
+       <property name="text">
+        <string>12</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="2">
+      <widget class="QCheckBox" name="checkBox26">
+       <property name="text">
+        <string>26</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="0">
+      <widget class="Line" name="line_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="Line" name="line_4">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="1">
+      <widget class="QCheckBox" name="checkBox25">
+       <property name="text">
+        <string>25</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="2">
+      <widget class="QCheckBox" name="checkBox10">
+       <property name="text">
+        <string>10</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="3">
+      <widget class="QCheckBox" name="checkBox11">
+       <property name="text">
+        <string>11</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="7">
+      <widget class="QLabel" name="label23">
+       <property name="text">
+        <string>盘组开关</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="3">
+      <widget class="QLabel" name="label19">
+       <property name="text">
+        <string>报警输入个数</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="6">
+      <widget class="QLabel" name="label14">
+       <property name="text">
+        <string>硬盘分配方式</string>
+       </property>
+      </widget>
+     </item>
+     <item row="5" column="5">
+      <widget class="QCheckBox" name="checkBox13">
+       <property name="text">
+        <string>13</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="6">
+      <widget class="QCheckBox" name="checkBox6">
+       <property name="text">
+        <string>6</string>
+       </property>
+      </widget>
+     </item>
+     <item row="7" column="6">
+      <widget class="QLabel" name="label22">
+       <property name="text">
+        <string>音频个数</string>
+       </property>
+      </widget>
+     </item>
+     <item row="11" column="7">
+      <widget class="QCheckBox" name="checkBox31">
+       <property name="text">
+        <string>31</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="3">
+      <widget class="Line" name="line">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="Line" name="line_12">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="5">
+      <widget class="QLabel" name="label13">
+       <property name="text">
+        <string>默认语言</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="7">
+      <widget class="Line" name="line_14">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="0">
+      <widget class="Line" name="line_27">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="1">
+      <widget class="Line" name="line_28">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="2">
+      <widget class="Line" name="line_29">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="3">
+      <widget class="Line" name="line_30">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="4">
+      <widget class="Line" name="line_31">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="5">
+      <widget class="Line" name="line_32">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="6">
+      <widget class="Line" name="line_33">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="12" column="7">
+      <widget class="Line" name="line_34">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="6">
+      <widget class="Line" name="line_35">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+     <item row="9" column="7">
+      <widget class="Line" name="line_36">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="Line" name="line_2">
@@ -644,26 +763,13 @@
      <enum>Qt::Horizontal</enum>
     </property>
    </widget>
-   <widget class="Line" name="line_15">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>196</y>
-      <width>801</width>
-      <height>20</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Horizontal</enum>
-    </property>
-   </widget>
    <widget class="Line" name="line_16">
     <property name="geometry">
      <rect>
       <x>843</x>
       <y>10</y>
       <width>20</width>
-      <height>191</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="orientation">
@@ -676,7 +782,7 @@
       <x>20</x>
       <y>10</y>
       <width>20</width>
-      <height>191</height>
+      <height>241</height>
      </rect>
     </property>
     <property name="orientation">
@@ -687,7 +793,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>380</y>
+      <y>440</y>
       <width>361</width>
       <height>41</height>
      </rect>
@@ -709,7 +815,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>230</y>
+      <y>270</y>
       <width>81</width>
       <height>16</height>
      </rect>
@@ -722,9 +828,9 @@
     <property name="geometry">
      <rect>
       <x>130</x>
-      <y>230</y>
+      <y>270</y>
       <width>691</width>
-      <height>131</height>
+      <height>151</height>
      </rect>
     </property>
     <layout class="QGridLayout" name="gridLayout_3">
@@ -938,13 +1044,34 @@
        </property>
       </widget>
      </item>
+     <item row="6" column="0">
+      <widget class="QLabel" name="chooseLabel_31">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="1">
+      <widget class="QLabel" name="chooseLabel_32">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
+     <item row="6" column="2">
+      <widget class="QLabel" name="chooseLabel_33">
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </widget>
    <widget class="QLabel" name="confirmlabel">
     <property name="geometry">
      <rect>
       <x>40</x>
-      <y>250</y>
+      <y>290</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -960,7 +1087,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>280</y>
+      <y>320</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -973,7 +1100,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>310</y>
+      <y>350</y>
       <width>75</width>
       <height>23</height>
      </rect>
@@ -986,7 +1113,7 @@
     <property name="geometry">
      <rect>
       <x>710</x>
-      <y>410</y>
+      <y>470</y>
       <width>161</width>
       <height>20</height>
      </rect>
@@ -999,7 +1126,7 @@
     <property name="geometry">
      <rect>
       <x>570</x>
-      <y>410</y>
+      <y>470</y>
       <width>54</width>
       <height>12</height>
      </rect>
@@ -1014,7 +1141,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>892</width>
+     <width>901</width>
      <height>23</height>
     </rect>
    </property>

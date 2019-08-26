@@ -27,14 +27,18 @@ void FtpManager::setUserInfo(const QString &userName, const QString &password)
 // 上传文件
 void FtpManager::put(const QString &fileName, const QString &path)
 {
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
+    QFile *sourceFile = new QFile(fileName);
+    sourceFile->open(QIODevice::ReadOnly);
+    QByteArray data = sourceFile->readAll();
+    sourceFile->close();
 
     m_pUrl.setPath(path);
     QNetworkReply *pReply = m_manager.put(QNetworkRequest(m_pUrl), data);
 
-    connect(pReply, SIGNAL(uploadProgress(qint64,qint64)), this, SLOT(ftpuploadProgress(qint64, qint64)));
+    pTimeout = new QReplyTimeout(pReply, 1000);
+
+    connect(pReply, SIGNAL(finished()), this, SLOT(uploadFinish()));
+    connect(pReply, SIGNAL(uploadProgress(qint64 ,qint64)),this,SLOT(ftpuploadProgress(qint64,qint64)));
     connect(pReply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(ftperror(QNetworkReply::NetworkError)));
 }
 
@@ -115,6 +119,27 @@ void FtpManager::finished()
     }
 
     m_file.close();
+    pReply->deleteLater();
+
+    emit sigfinish(result);
+}
+
+// 下载过程中写文件
+void FtpManager::uploadFinish()
+{
+    QNetworkReply *pReply = qobject_cast<QNetworkReply *>(sender());
+    bool result = true;
+    switch (pReply->error()) {
+    case QNetworkReply::NoError : {
+
+    }
+        break;
+    default:
+        qDebug() << " download err: please Check Network Status  " ;
+        result = false;
+        break;
+    }
+
     pReply->deleteLater();
 
     emit sigfinish(result);
